@@ -1,39 +1,44 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Drawer } from 'expo-router/drawer';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import Entypo from '@expo/vector-icons/Entypo';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+export default function Layout() {
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <GestureHandlerRootView style={{
+      flex: 1
+    }}>
+      <Drawer>
+        <Drawer.Screen
+          name="index"
+          options={{
+            drawerLabel: 'Home',
+            title: 'overview',
+            drawerIcon: ({color, size}) => (<Entypo name="home" size={size} color={color} /> 
+
+            )
+          }}
+        />
+        <Drawer.Screen
+          name="User"
+          options={{
+            drawerLabel: 'User',
+            title: 'overview',
+            drawerIcon: ({color,size}) => 
+              (<Entypo name="user" size={size} color={color}/>)
+          }}
+        />
+        <Drawer.Screen 
+        name="settings"
+          options={{
+            drawerLabel: "settings",
+            title: "overview",
+            drawerIcon: ({size}) => (<Ionicons name="settings-outline" size={size}/>)
+          }}        
+        />
+      </Drawer>
+     </GestureHandlerRootView>
   );
 }
